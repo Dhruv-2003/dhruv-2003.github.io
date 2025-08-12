@@ -1,5 +1,5 @@
 # The URL the site will be built for
-base_url = "https://0xdhruv.eth.limo"
+base_url = "https://dhruv-2003.github.io"
 title = "Dhruv Agarwal"
 description = "Personal website of Dhruv, a software engineer and researcher in the field of cryptography and blockchain technology."
 default_language = "en"
