@@ -1,0 +1,36 @@
+[[collection]]
+type = "card"
+title = "Contributor"
+subtitle = "ZkEmail"
+date = "Feb-May 2025"
+content = """
+- Upgrading Account recovery [contracts](https://github.com/zkemail/email-recovery/pulls?q=is:pr+is:closed+author:Dhruv-2003) to support new zk-email & zk-jwt circuits
+- Testing the compatibility of EIP7702 delegated accounts with [Account recovery v1](https://github.com/zkemail/email-recovery-example-scripts/pulls?q=is:pr+is:closed+author:Dhruv-2003)
+- Developed a Demo application of showing account recovery for EIP7702 delegated and passkey controlled accounts. Try [recovery.zk.email](https://recovery.zk.email/)
+"""
+
+
+[[collection]]
+type = "card"
+title = "Research Engineer"
+subtitle = "Stackr Labs"
+date = "2024"
+content = """
+- Developed POC of Keystore Rollup like 1Password but for Onchain accounts
+- Implemented a Fast finality layer for pessimistic proving with AVS - [VulcanFFL](https://github.com/Dhruv-2003/Vulcan-FFL)
+- Engaged in research sprints to explore WASM-RISCV compatibility and shared sequencing
+- Conducted protocol integrations, framework testing & proposed new ideas
+- Worked on Stackr full & light sync client and DA-L1 pipeline
+"""
+
+
+[[collection]]
+type = "card"
+title = "Web3 Engineer"
+subtitle = "Owlearn"
+date = "2023"
+content = """
+- Developed a suite of 15+ smart contracts using Solidity and Foundry, with over 3000 LOC
+- Collaborated closely on the system design and architecture, ensuring the scalability and security of the platform
+- Created a Subgraph to efficiently index contract data using The Graph protocol
+"""
