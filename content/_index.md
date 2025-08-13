@@ -32,6 +32,10 @@ Currently, I’m experimenting & building systems in Rust, deepening my understa
 
 I like travelling and photography, and I'm always up for a good conversation about the latest in tech or engineering. Feel free to reach out.
 
+## Publications
+
+{{ collection(file="publications/publications.toml") }}
+
 ## Experience
 
 {{ collection(file="experience/experience.toml") }}
