@@ -30,7 +30,7 @@ this isn’t a polished technical writeup of every exploit, wintermute already p
 
 i first heard about the challenge from someone who competed last year and later joined wintermute, which got me curious. i expected more research-analyst style questions (finding data, doing protocol-level case studies, etc.), but it turned out to be much more hands-on: debugging exploits, replaying attacks, decompiling bytecode, liquidations, and even a pvp liquidity game.
 
-this mix of research + execution hooked me instantly. i’m not a security researcher by background, but i like solving puzzles, and my time as a research engineer at stackr labs taught me to learn by doing. this challenge became a sprint of learning defi internals under pressure.
+this mix of research + execution hooked me instantly. i’m not a security researcher by background, but i like solving puzzles. this challenge became a sprint of learning defi internals under pressure.
 
 if you want the solutions, check this [case studies writeup](https://github.com/Frodan/wintermute-alpha-2025-writeups) by @frodan. if you want to see how someone like me worked through them, right or wrong, then read on.
 
@@ -112,3 +112,5 @@ the biggest things i took away from this sprint:
 i loved participating in alpha challenge 2025. it pushed me into bytecode, flashloans, liquidations, and liquidity management in ways i hadn’t done before. more than anything, it showed me how much i enjoy this type of puzzle-solving. i ended up ranking 17th among 1000+ participants in the leaderboard with a score of 500, not bad ig. i’ll definitely keep joining these competitions and keep learning in public.
 
 thanks to wintermute for organising, and to everyone who shared their own approaches.
+
+connect with me on [twitter](https://twitter.com/0xdhruv) if you want to chat more about defi, smart contracts, or puzzles like these.
