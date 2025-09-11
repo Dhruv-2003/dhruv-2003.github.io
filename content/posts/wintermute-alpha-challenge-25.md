@@ -113,4 +113,4 @@ i loved participating in alpha challenge 2025. it pushed me into bytecode, flash
 
 thanks to wintermute for organising, and to everyone who shared their own approaches.
 
-connect with me on [twitter](https://twitter.com/0xdhruv) if you want to chat more about defi, smart contracts, or puzzles like these.
+connect with me on [twitter](https://twitter.com/0xdhruva) if you want to chat more about defi, smart contracts, or puzzles like these.
