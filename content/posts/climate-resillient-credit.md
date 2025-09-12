@@ -79,6 +79,8 @@ There are several design challenges to work through, like what tokens farmers sh
 
 If you're working on similar problems, or have thoughts on making this more practical, I'd love to hear from you.
 
+connect with me on [twitter](https://twitter.com/0xdhruva) if you want to chat more about defi, smart contracts, or puzzles like these.
+
 ## Acknowledgments
 
 Thanks to [Vlad](https://x.com/Vladfdp) and [Tim Robinson](https://x.com/timjrobinson) for their feedback and insights on this post.
