@@ -136,7 +136,7 @@ This will be the first part of a series:
 - **Part 2**: a sketch/spec of the platform.
 - **Part 3**: an MVP implementation (frontend + CLI).
 
-I’d love for this to be collaborative. If you’re working on rollups, infra, or care about censorship resistance, I’d really appreciate thoughts, feedback, and contributions. my [twitter](https://twitter.com/0xdhruva) DMs are open.
+I’d love for this to be collaborative. If you’re working on rollups, infra, or care about Ethereum’s trust model, I’d really appreciate thoughts, feedback, and contributions. my [twitter](https://twitter.com/0xdhruva) DMs are open.
 
 ## Acknowledgments
 
