@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  
+  
+    
+  
+  <meta name="description" content="sharing my thoughts on the importance of escape hatches for rollups and how they can empower users.">
+
+  <title>Escape Hatches for Rollups: Why Users Need Forced Exit Tools</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="https://0xdhruv.me/img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://0xdhruv.me/img/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://0xdhruv.me/img/apple-touch-icon.png">
+  
+  <style>
+
+  /* light mode colors */
+  body {
+    --primary-color: #5871a2;
+    --primary-pale-color: #5871a233;
+    --primary-decoration-color: #5871a210;
+    --bg-color: #ffffff;
+    --text-color: #2f3030;
+    --text-pale-color: #767676;
+    --text-decoration-color: #a9a9a9;
+    --highlight-mark-color: #5f75b020;
+
+    --callout-note-color: #5871a2;
+    --callout-tip-color: #268556;
+    --callout-important-color: #885fc9;
+    --callout-warning-color: #ab6632;
+    --callout-caution-color: #c64e4e;
+  }
+
+  /* dark mode colors */
+  body.dark {
+    --primary-color: #6f8fd1;
+    --primary-pale-color: #6f8fd166;
+    --primary-decoration-color: #6f8fd112;
+    --bg-color: #1c1c1c;
+    --text-color: #c1c1c1;
+    --text-pale-color: #848484;
+    --text-decoration-color: #5f5f5f;
+    --highlight-mark-color: #8296cb3b;
+
+    --callout-note-color: #6f8fd1;
+    --callout-tip-color: #47976f;
+    --callout-important-color: #9776cd;
+    --callout-warning-color: #ad7a52;
+    --callout-caution-color: #d06161;
+  }
+
+  /* typography */
+  body {
+    --main-font: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --code-font: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    --homepage-max-width: 768px;
+    --main-max-width: 768px;
+    --avatar-size: 60px;
+    --font-size: 16px;
+    --line-height: 1.75;
+    --img-border-radius: 0px;
+    --detail-border-radius: 0px;
+    --dark-mode-img-brightness: 0.75;
+    --dark-mode-chart-brightness: 0.75;
+    --inline-code-border-radius: 2px;
+    --inline-code-bg-color: var(--primary-decoration-color);
+    --block-code-border-radius: 0px;
+    --block-code-border-color: var(--primary-color);
+    --detail-border-color: var(--primary-color);
+  }
+
+</style>
+
+  <link rel="stylesheet" href="https://0xdhruv.me/main.css">
+  
+
+<link id="hl" rel="stylesheet" type="text/css" href="/hl-light.css" />
+
+
+
+  <script
+  defer
+  src="https://analytics.umami.0xdhruv.me/script.js"
+  data-website-id="5b7d8240-d710-4d0d-a762-1227c353ac88"
+></script>
+
+</head>
+
+<body class="post">
+  
+  
+<div id="wrapper">
+  <div id="blank"></div>
+  <aside>
+    
+    
+    <nav>
+      <ul>
+        
+        <li>
+          <a class="h2" href="#opening-hook">Opening Hook</a>
+          
+        </li>
+        
+        <li>
+          <a class="h2" href="#why-this-matters">Why This Matters</a>
+          
+        </li>
+        
+        <li>
+          <a class="h2" href="#rollup-stages-l2beat">Rollup Stages (L2Beat)</a>
+          
+        </li>
+        
+        <li>
+          <a class="h2" href="#what-i-found-digging-deeper">What I Found Digging Deeper</a>
+          
+          <ul>
+            
+            <li>
+              <a class="h3" href="#arbitrum-nitro">Arbitrum Nitro</a>
+            </li>
+            
+            <li>
+              <a class="h3" href="#optimism-op-stack-bedrock">Optimism &#x2F; OP Stack (Bedrock)</a>
+            </li>
+            
+            <li>
+              <a class="h3" href="#zksync-era">zkSync Era</a>
+            </li>
+            
+            <li>
+              <a class="h3" href="#the-generic-forced-withdrawal-flow">The Generic Forced Withdrawal Flow</a>
+            </li>
+            
+          </ul>
+          
+        </li>
+        
+        <li>
+          <a class="h2" href="#what-s-missing-today">What’s Missing Today?</a>
+          
+        </li>
+        
+        <li>
+          <a class="h2" href="#my-idea-an-open-source-escape-hatch">My Idea: An Open-Source Escape Hatch</a>
+          
+        </li>
+        
+        <li>
+          <a class="h2" href="#what-s-next">What’s next?</a>
+          
+        </li>
+        
+        <li>
+          <a class="h2" href="#acknowledgments">Acknowledgments</a>
+          
+        </li>
+        
+      </ul>
+    </nav>
+    
+    
+    <button id="back-to-top" aria-label="back to top">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-up"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+
+    </button>
+    
+  </aside>
+  <main>
+    
+<header>
+  <nav>
+    <a href="https:&#x2F;&#x2F;0xdhruv.me&#x2F;posts">← Back</a>
+  </nav>
+</header>
+
+
+    <div>
+      
+      
+      
+      
+      <div id="copy-cfg" style="display: none;" data-copy-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
+" data-check-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
+"></div>
+      
+      <article class="prose">
+        <h1>Escape Hatches for Rollups: Why Users Need Forced Exit Tools</h1>
+        <div id="post-info">
+          <div id="date">
+            <span id="publish">Oct 7, 2025</span>
+            </div>
+
+          
+          <div id="tags">
+            <a class="instant" href="https://0xdhruv.me/tags/rollups"><span>#</span>rollups</a><a class="instant" href="https://0xdhruv.me/tags/l2"><span>#</span>l2</a><a class="instant" href="https://0xdhruv.me/tags/ethereum"><span>#</span>ethereum</a><a class="instant" href="https://0xdhruv.me/tags/forced-exits"><span>#</span>forced exits</a>
+          </div>
+          
+        </div>
+
+        
+        
+
+        <blockquote id="outdate_alert" class="callout caution hidden" data-days="120"
+          data-alert-text-before="This article was last updated "
+          data-alert-text-after=" days ago and may be out of date.">
+          <div class="content"></div>
+        </blockquote>
+        
+
+        <h2 id="opening-hook">Opening Hook<a class="zola-anchor" href="#opening-hook" aria-label="Anchor link for: opening-hook" style="visibility: hidden;"></a>
+</h2>
+<p>There was a recent back-and-forth on CT about Base sequencers and whether they can really control user funds. The key point: sequencers can’t just steal your ETH or stop withdrawals. Vitalik even broke this down in a tweet:</p>
+<div style="display: flex; justify-content: center;">
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Base is doing things the right way: an L2 on top of Ethereum, that uses its centralized features to provide stronger UX features, while still being tied into Ethereum&#39;s decentralized base layer for security.<br><br>Base does not have custody over your funds, they cannot steal funds or… <a href="https://t.co/0EMdThg4gU">https://t.co/0EMdThg4gU</a></p>&mdash; vitalik.eth (@VitalikButerin) <a href="https://twitter.com/VitalikButerin/status/1970258498996048247?ref_src=twsrc%5Etfw">September 22, 2025</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</div>
+<p>He explains that rollups have built-in protections. One of the big ones is <em>forced transaction execution,</em> if a sequencer censors you, you should still be able to push a withdrawal through and get your funds out without their cooperation.</p>
+<p>As a developer, I can script my way through this. But then I wondered: how does a normal user, who’s never touched calldata, do the same? Right now, there’s no straightforward way.</p>
+<h2 id="why-this-matters">Why This Matters<a class="zola-anchor" href="#why-this-matters" aria-label="Anchor link for: why-this-matters" style="visibility: hidden;"></a>
+</h2>
+<p>Rollups inherit Ethereum’s security <em>only if users can always exit back to L1</em>. In good times, sequencers behave and withdrawals go through fine. But in emergencies — censorship, downtime, governance capture, that safety net matters. Forced execution is the “emergency exit door.” It ensures your funds are protected by Ethereum’s economic security, not the goodwill of a single sequencer.</p>
+<p>This is exactly what makes rollups powerful: the combination of Ethereum’s L1 guarantees with the property that you can always force your way out.</p>
+<h2 id="rollup-stages-l2beat">Rollup Stages (L2Beat)<a class="zola-anchor" href="#rollup-stages-l2beat" aria-label="Anchor link for: rollup-stages-l2beat" style="visibility: hidden;"></a>
+</h2>
+<p>L2Beat frames rollup maturity using “stages”:</p>
+<ul>
+<li><strong>Stage 0</strong> → fully trusted setup, operators can block or fake messages.</li>
+<li><strong>Stage 1</strong> → users are safe as long as a security council (≥75%) isn’t compromised, and upgrades must allow exits.</li>
+<li><strong>Stage 2</strong> → fully permissionless fraud/validity proofs, minimal reliance on any council.</li>
+</ul>
+<p>For the purposes of this blog (and the project I’m working on), the minimum bar we care about is <strong>Stage 1</strong>. That’s where forced exits are guaranteed by design.</p>
+<p>Not every rollup is there yet, for example, zkSync (which I’ll dive into later) doesn’t currently meet Stage 1. But the important part is: the escape hatches exist at the protocol level, altho they can be controlled by the governance in this case.</p>
+<h2 id="what-i-found-digging-deeper">What I Found Digging Deeper<a class="zola-anchor" href="#what-i-found-digging-deeper" aria-label="Anchor link for: what-i-found-digging-deeper" style="visibility: hidden;"></a>
+</h2>
+<p>I dove into three prominent rollup stacks — <strong>Arbitrum Nitro</strong>, <strong>OP / Optimism (Bedrock)</strong>, and <strong>zkSync Era,</strong> to understand exactly how forced execution or forced withdrawal works (or is supposed to work). The core logic differs per stack, but the goal is always: “let the user bypass a censoring sequencer and safely exit.”</p>
+<p>I’ll walk through each, then explain the generalized flow. After that, we’ll see <em>where</em> the tools break for regular users, that’s where our missing link lies.</p>
+<h3 id="arbitrum-nitro">Arbitrum Nitro<a class="zola-anchor" href="#arbitrum-nitro" aria-label="Anchor link for: arbitrum-nitro" style="visibility: hidden;"></a>
+</h3>
+<ul>
+<li>Arbitrum maintains a <strong>delayed inbox</strong> on L1. Users can enqueue transactions there.</li>
+<li>If the sequencer ignores or fails to include such a message within a threshold (currently ~24 hours on Arbitrum One) anyone can call <code>forceInclusion</code> on the sequencer inbox contract on L1 to force that message into the rollup’s sequence.</li>
+<li>This ensures the transaction <em>eventually</em> is processed, even if the sequencer is censoring.</li>
+</ul>
+<h3 id="optimism-op-stack-bedrock">Optimism / OP Stack (Bedrock)<a class="zola-anchor" href="#optimism-op-stack-bedrock" aria-label="Anchor link for: optimism-op-stack-bedrock" style="visibility: hidden;"></a>
+</h3>
+<ul>
+<li>Optimism defines <strong>deposit transactions</strong> via its <code>OptimismPortal</code> contract on L1. Users can post an L2 transaction by calling <code>depositTransaction</code> on L1, effectively enqueueing it into an L2 message queue.</li>
+<li>The rollup’s derivation rules require that these L1-originated messages will be included in L2, even if the sequencer is down. Under extended downtime, after ~12 hours, the protocol forces inclusion of those deposits.</li>
+<li>In short: if the sequencer is offline or censoring, your L1‐submitted transaction will eventually be processed because of protocol rules.</li>
+</ul>
+<p>Optimism’s “forced transaction” mechanism is documented in their docs.</p>
+<h3 id="zksync-era">zkSync Era<a class="zola-anchor" href="#zksync-era" aria-label="Anchor link for: zksync-era" style="visibility: hidden;"></a>
+</h3>
+<ul>
+<li>zkSync has an L1 → L2 <strong>priority queue / mailbox</strong>. Users or contracts can call a function (e.g. <code>requestL2Transaction</code>) in the L1 mailbox to submit a request (withdrawal or action) destined for L2.</li>
+<li>The sequencer is required by protocol rules to process the L1-originated messages in order, and not arbitrarily reorder or skip them.</li>
+<li>If the sequencer completely halts or refuses to act, in theory a user (or third party) can initiate a <strong>trustless exit</strong> by submitting a zk-proof to the L1 contract capturing their funds and state after some time. The idea is that because zk proofs validate state transitions, you can bypass the sequencer. (However, in practice zkSync is not yet fully permissionless in who can submit proofs.) Because zkSync still restricts who can publish state roots, it does <strong>not</strong> fully satisfy Stage 1 under L2Beat’s framework.</li>
+</ul>
+<h3 id="the-generic-forced-withdrawal-flow">The Generic Forced Withdrawal Flow<a class="zola-anchor" href="#the-generic-forced-withdrawal-flow" aria-label="Anchor link for: the-generic-forced-withdrawal-flow" style="visibility: hidden;"></a>
+</h3>
+<p>Here’s a distilled “recipe” of how forced withdrawals are supposed to work across rollups:</p>
+<ol>
+<li><strong>Craft the withdrawal transaction</strong> on L2 (or a call to a contract that releases your funds). For native tokens, this usually means calling the standard bridge contract’s method to initiate the exit.</li>
+<li><strong>Submit via L1</strong> — call the corresponding rollup’s L1 contract (e.g. Optimism’s <code>OptimismPortal</code>, Arbitrum’s inbox, zkSync’s mailbox) containing your withdrawal intent.</li>
+<li><strong>Inclusion &amp; execution on L2</strong> — eventually that message is included in an L2 block (either by sequencer or forced inclusion). The withdrawal executes on L2.</li>
+<li><strong>State posting to L1</strong> — the rollup posts the resulting state (or output root) on L1 (batch), so L1 “sees” the new L2 state.</li>
+<li><strong>Construct inclusion / withdrawal proof</strong> (for optimistic rollups) — use proof machinery to show that your withdrawal transaction was indeed part of the posted state (via Merkle/inclusion proofs).</li>
+<li><strong>Finalization / claim</strong> — after any challenge window passes (for optimistic rollups), call a function on L1 (e.g. <code>finalizeWithdrawal</code>) to actually move funds to L1 (or send tokens).</li>
+</ol>
+<p>Depending on rollup type:</p>
+<ul>
+<li><strong>Optimistic</strong> → you need to wait the challenge period, and potentially submit fraud proofs / proof-of-inclusion.</li>
+<li><strong>zkRollups</strong> → because of validity proofs, invalid states are rejected outright; once your state is accepted, finalization is more straightforward.</li>
+</ul>
+<p>In practice, some steps require access to archive data, correct proofs, or state roots, so not trivial for a casual user.</p>
+<h2 id="what-s-missing-today">What’s Missing Today?<a class="zola-anchor" href="#what-s-missing-today" aria-label="Anchor link for: what-s-missing-today" style="visibility: hidden;"></a>
+</h2>
+<p>If you’ve read through the process above, you can already see the problem: it’s too complex for anyone outside of a developer circle. The contracts, inboxes, proofs, challenge periods, they’re technically there, but hidden behind low-level calls and infra requirements.</p>
+<p>A few tools and experiments have tried to bring parts of this vision to life, but none yet fully unlocks escape hatches for normal users.</p>
+<ul>
+<li><strong>Superbridge</strong> supports <em>forced withdrawals</em> as an escape hatch across rollups. But it’s tied into a bridging UX and isn’t a standalone, backend-agnostic tool.</li>
+<li><strong>Arbitrum Connect by WakeUp Labs</strong> is a front-end interface to force transaction inclusion during sequencer downtime on Arbitrum. This is closer to what I’m after, but it's token specific.</li>
+<li><strong>dYdX escape hatch</strong> (built by L2Beat with Starknet), but that’s not general-purpose.</li>
+</ul>
+<h2 id="my-idea-an-open-source-escape-hatch">My Idea: An Open-Source Escape Hatch<a class="zola-anchor" href="#my-idea-an-open-source-escape-hatch" aria-label="Anchor link for: my-idea-an-open-source-escape-hatch" style="visibility: hidden;"></a>
+</h2>
+<p>This led me to sketch an idea: a <strong>standard, open-source platform</strong> that makes forced transaction execution practical. Think of it as a universal “emergency exit app” for rollups.</p>
+<div style="display: flex; justify-content: center;">
+  <img src="/escape-hatch/escape-hatch-cover.png" alt="Escape hatch cover" style="max-width: 60%; height: auto; border-radius: 8px;" />
+</div>
+<p>Here’s how I imagine it working:</p>
+<ul>
+<li><strong>Frontend</strong> → lightweight HTML/JS app, hosted on IPFS, resolved via ENS for censorship-resistant access.</li>
+<li><strong>Backend logic</strong> → directly integrates with rollup contracts and libraries, minimal third-party dependencies.</li>
+<li><strong>Node access</strong> → uses rollup nodes to fetch proofs/state; in failure scenarios, users could run their own node to complete the process.</li>
+<li><strong>Self-reliance</strong> → not dependent on any centralized service. Users could even spin up their own local copy.</li>
+<li><strong>Emergency mode</strong> → fallback CLI, works standalone with your own node if everything else is down.</li>
+<li><strong>Open source</strong> → MIT-licensed, transparent, auditable.</li>
+</ul>
+<p>To start, I’d scope it down to <strong>ETH and ERC-20 forced exits</strong>. Those are relatively simple and the most immediately useful. More complex cases (like exiting from a DeFi protocol position) will take time, since those require multi-step contract interactions and more complex proofs.</p>
+<h2 id="what-s-next">What’s next?<a class="zola-anchor" href="#what-s-next" aria-label="Anchor link for: what-s-next" style="visibility: hidden;"></a>
+</h2>
+<p>The purpose of this first blog is to frame the problem: escape hatches exist at the protocol level, but not at the user level. If we don’t solve that, we don’t really get the full promise of rollups.</p>
+<p>This will be the first part of a series:</p>
+<ul>
+<li><strong>Part 1</strong> (this post): the problem + research.</li>
+<li><strong>Part 2</strong>: a sketch/spec of the platform.</li>
+<li><strong>Part 3</strong>: an MVP implementation (frontend + CLI).</li>
+</ul>
+<p>I’d love for this to be collaborative. If you’re working on rollups, infra, or care about Ethereum’s trust model, I’d really appreciate thoughts, feedback, and contributions. my <a rel="nofollow noreferrer" href="https://twitter.com/0xdhruva">twitter</a> DMs are open.</p>
+<h2 id="acknowledgments">Acknowledgments<a class="zola-anchor" href="#acknowledgments" aria-label="Anchor link for: acknowledgments" style="visibility: hidden;"></a>
+</h2>
+<p>Thanks to <a rel="nofollow noreferrer" href="https://x.com/0xRampey">Rampey</a>, <a rel="nofollow noreferrer" href="https://x.com/dhaiwat10">Dhaiwat</a> for their feedback and insights on this post.</p>
+
+      </article>
+
+      
+      
+
+      
+      
+    </div>
+
+    
+
+
+<footer>
+  <div class="left">
+    <div class="copyright">
+      © 2025 Dhruv
+      
+      <span>|</span>
+      Built with <a href="https://www.getzola.org" rel="noreferrer" target="_blank">zola</a> and <a href="https://github.com/isunjn/serene" rel="noreferrer" target="_blank">serene</a>
+      
+    </div>
+  </div>
+
+  <div class="right">
+    
+    
+      
+    
+    
+    <a id="rss-btn" href="https://0xdhruv.me/posts/feed.xml">RSS</a>
+    
+    
+
+    
+  </div>
+</footer>
+
+
+
+
+<dialog id="rss-mask">
+  <div>
+    <a href="https:&#x2F;&#x2F;0xdhruv.me&#x2F;posts&#x2F;feed.xml">https:&#x2F;&#x2F;0xdhruv.me&#x2F;posts&#x2F;feed.xml</a>
+    
+    
+    <button autofocus aria-label="copy" data-link="https:&#x2F;&#x2F;0xdhruv.me&#x2F;posts&#x2F;feed.xml" data-copy-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
+" data-check-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
+" >
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z" fill="currentColor"></path></svg>
+
+    </button>
+  </div>
+</dialog>
+
+
+
+  </main>
+</div>
+
+  
+<script src="/js/lightense.min.js"></script>
+
+
+  <script src="https://0xdhruv.me/js/main.js"></script>
+</body>
+
+</html>

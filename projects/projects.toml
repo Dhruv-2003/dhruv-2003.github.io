@@ -1,0 +1,53 @@
+[[collection]]
+type = "entry"
+title = "pipegate"
+link = "https://github.com/Dhruv-2003/ethbangkok-24"
+subtitle = "spec for api monetisation using payment channel with stablecoins"
+
+[[collection]]
+type = "entry"
+title = "reth"
+link = "https://github.com/paradigmxyz/reth/pulls?q=is:pr+author:Dhruv-2003+"
+subtitle = "blazing-fast implementation of the Ethereum protocol, in Rust"
+
+[[collection]]
+type = "entry"
+title = "helios"
+link = "https://github.com/a16z/helios/pulls?q=+is%3Apr+author%3ADhruv-2003+"
+subtitle = "multichain light client for Ethereum, in Rust"
+
+[[collection]]
+type = "entry"
+title = "alloy"
+link = "https://github.com/alloy-rs/alloy/pulls?q=+is:pr+author:Dhruv-2003+"
+subtitle = "Transports, Middleware, and Networks for the Alloy project"
+
+[[collection]]
+type = "entry"
+title = "stealth-EIP7702"
+link = "https://github.com/Dhruv-2003/stealth-7702"
+subtitle = "experiment with stealth addresses & EIP7702"
+
+[[collection]]
+type = "entry"
+title = "tesseract"
+link = "https://github.com/kushagrasarathe/ethonline24"
+subtitle = "native eth restaking simplified with ssv network & eigenlayer"
+
+[[collection]]
+type = "entry"
+title = "discovery donar"
+link = "https://github.com/Dhruv-2003/Discovery-Donar"
+subtitle = "academic donation platform for funding resarch with crypto using zkEmail"
+
+[[collection]]
+type = "entry"
+title = "intentsMRU"
+link = "https://github.com/Dhruv-2003/IntentsMRU"
+subtitle = "a intent solver market built as a micro rollup for solving intents into on-chain actions"
+
+[[collection]]
+type = "entry"
+title = "frames64"
+link = "https://github.com/Dhruv-2003/Frame-base64"
+subtitle = "a farcaster frames based game that decides the result of tournament based on voting from farcaster users"

@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+	<title>Posts</title>
+	<subtitle>My recent posts and articles on various topics.</subtitle>
+	<link href="https://0xdhruv.me/posts/feed.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://0xdhruv.me/posts/"/>
+	<updated>2025-10-07T00:00:00+00:00</updated>
+	<id>https://0xdhruv.me/posts/feed.xml</id>
+	<entry xml:lang="en">
+		<title>Escape Hatches for Rollups: Why Users Need Forced Exit Tools</title>
+		<published>2025-10-07T00:00:00+00:00</published>
+		<updated>2025-10-07T00:00:00+00:00</updated>
+		<link href="https://0xdhruv.me/posts/escape-hatch/" type="text/html"/>
+		<id>https://0xdhruv.me/posts/escape-hatch/</id>
+		<content type="html">&lt;h2 id=&quot;opening-hook&quot;&gt;Opening Hook&lt;a class=&quot;zola-anchor&quot; href=&quot;#opening-hook&quot; aria-label=&quot;Anchor link for: opening-hook&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;There was a recent back-and-forth on CT about Base sequencers and whether they can really control user funds. The key point: sequencers can’t just steal your ETH or stop withdrawals. Vitalik even broke this down in a tweet:&lt;&#x2F;p&gt;
+&lt;div style=&quot;display: flex; justify-content: center;&quot;&gt;
+&lt;blockquote class=&quot;twitter-tweet&quot;&gt;&lt;p lang=&quot;en&quot; dir=&quot;ltr&quot;&gt;Base is doing things the right way: an L2 on top of Ethereum, that uses its centralized features to provide stronger UX features, while still being tied into Ethereum&amp;#39;s decentralized base layer for security.&lt;br&gt;&lt;br&gt;Base does not have custody over your funds, they cannot steal funds or… &lt;a href=&quot;https:&#x2F;&#x2F;t.co&#x2F;0EMdThg4gU&quot;&gt;https:&#x2F;&#x2F;t.co&#x2F;0EMdThg4gU&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;&amp;mdash; vitalik.eth (@VitalikButerin) &lt;a href=&quot;https:&#x2F;&#x2F;twitter.com&#x2F;VitalikButerin&#x2F;status&#x2F;1970258498996048247?ref_src=twsrc%5Etfw&quot;&gt;September 22, 2025&lt;&#x2F;a&gt;&lt;&#x2F;blockquote&gt; &lt;script async src=&quot;https:&#x2F;&#x2F;platform.twitter.com&#x2F;widgets.js&quot; charset=&quot;utf-8&quot;&gt;&lt;&#x2F;script&gt;
+&lt;&#x2F;div&gt;
+&lt;p&gt;He explains that rollups have built-in protections. One of the big ones is &lt;em&gt;forced transaction execution,&lt;&#x2F;em&gt; if a sequencer censors you, you should still be able to push a withdrawal through and get your funds out without their cooperation.&lt;&#x2F;p&gt;
+&lt;p&gt;As a developer, I can script my way through this. But then I wondered: how does a normal user, who’s never touched calldata, do the same? Right now, there’s no straightforward way.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;why-this-matters&quot;&gt;Why This Matters&lt;a class=&quot;zola-anchor&quot; href=&quot;#why-this-matters&quot; aria-label=&quot;Anchor link for: why-this-matters&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;Rollups inherit Ethereum’s security &lt;em&gt;only if users can always exit back to L1&lt;&#x2F;em&gt;. In good times, sequencers behave and withdrawals go through fine. But in emergencies — censorship, downtime, governance capture, that safety net matters. Forced execution is the “emergency exit door.” It ensures your funds are protected by Ethereum’s economic security, not the goodwill of a single sequencer.&lt;&#x2F;p&gt;
+&lt;p&gt;This is exactly what makes rollups powerful: the combination of Ethereum’s L1 guarantees with the property that you can always force your way out.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;rollup-stages-l2beat&quot;&gt;Rollup Stages (L2Beat)&lt;a class=&quot;zola-anchor&quot; href=&quot;#rollup-stages-l2beat&quot; aria-label=&quot;Anchor link for: rollup-stages-l2beat&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;L2Beat frames rollup maturity using “stages”:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Stage 0&lt;&#x2F;strong&gt; → fully trusted setup, operators can block or fake messages.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Stage 1&lt;&#x2F;strong&gt; → users are safe as long as a security council (≥75%) isn’t compromised, and upgrades must allow exits.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Stage 2&lt;&#x2F;strong&gt; → fully permissionless fraud&#x2F;validity proofs, minimal reliance on any council.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;For the purposes of this blog (and the project I’m working on), the minimum bar we care about is &lt;strong&gt;Stage 1&lt;&#x2F;strong&gt;. That’s where forced exits are guaranteed by design.&lt;&#x2F;p&gt;
+&lt;p&gt;Not every rollup is there yet, for example, zkSync (which I’ll dive into later) doesn’t currently meet Stage 1. But the important part is: the escape hatches exist at the protocol level, altho they can be controlled by the governance in this case.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;what-i-found-digging-deeper&quot;&gt;What I Found Digging Deeper&lt;a class=&quot;zola-anchor&quot; href=&quot;#what-i-found-digging-deeper&quot; aria-label=&quot;Anchor link for: what-i-found-digging-deeper&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;I dove into three prominent rollup stacks — &lt;strong&gt;Arbitrum Nitro&lt;&#x2F;strong&gt;, &lt;strong&gt;OP &#x2F; Optimism (Bedrock)&lt;&#x2F;strong&gt;, and &lt;strong&gt;zkSync Era,&lt;&#x2F;strong&gt; to understand exactly how forced execution or forced withdrawal works (or is supposed to work). The core logic differs per stack, but the goal is always: “let the user bypass a censoring sequencer and safely exit.”&lt;&#x2F;p&gt;
+&lt;p&gt;I’ll walk through each, then explain the generalized flow. After that, we’ll see &lt;em&gt;where&lt;&#x2F;em&gt; the tools break for regular users, that’s where our missing link lies.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;arbitrum-nitro&quot;&gt;Arbitrum Nitro&lt;a class=&quot;zola-anchor&quot; href=&quot;#arbitrum-nitro&quot; aria-label=&quot;Anchor link for: arbitrum-nitro&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Arbitrum maintains a &lt;strong&gt;delayed inbox&lt;&#x2F;strong&gt; on L1. Users can enqueue transactions there.&lt;&#x2F;li&gt;
+&lt;li&gt;If the sequencer ignores or fails to include such a message within a threshold (currently ~24 hours on Arbitrum One) anyone can call &lt;code&gt;forceInclusion&lt;&#x2F;code&gt; on the sequencer inbox contract on L1 to force that message into the rollup’s sequence.&lt;&#x2F;li&gt;
+&lt;li&gt;This ensures the transaction &lt;em&gt;eventually&lt;&#x2F;em&gt; is processed, even if the sequencer is censoring.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;optimism-op-stack-bedrock&quot;&gt;Optimism &#x2F; OP Stack (Bedrock)&lt;a class=&quot;zola-anchor&quot; href=&quot;#optimism-op-stack-bedrock&quot; aria-label=&quot;Anchor link for: optimism-op-stack-bedrock&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Optimism defines &lt;strong&gt;deposit transactions&lt;&#x2F;strong&gt; via its &lt;code&gt;OptimismPortal&lt;&#x2F;code&gt; contract on L1. Users can post an L2 transaction by calling &lt;code&gt;depositTransaction&lt;&#x2F;code&gt; on L1, effectively enqueueing it into an L2 message queue.&lt;&#x2F;li&gt;
+&lt;li&gt;The rollup’s derivation rules require that these L1-originated messages will be included in L2, even if the sequencer is down. Under extended downtime, after ~12 hours, the protocol forces inclusion of those deposits.&lt;&#x2F;li&gt;
+&lt;li&gt;In short: if the sequencer is offline or censoring, your L1‐submitted transaction will eventually be processed because of protocol rules.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;Optimism’s “forced transaction” mechanism is documented in their docs.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;zksync-era&quot;&gt;zkSync Era&lt;a class=&quot;zola-anchor&quot; href=&quot;#zksync-era&quot; aria-label=&quot;Anchor link for: zksync-era&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;zkSync has an L1 → L2 &lt;strong&gt;priority queue &#x2F; mailbox&lt;&#x2F;strong&gt;. Users or contracts can call a function (e.g. &lt;code&gt;requestL2Transaction&lt;&#x2F;code&gt;) in the L1 mailbox to submit a request (withdrawal or action) destined for L2.&lt;&#x2F;li&gt;
+&lt;li&gt;The sequencer is required by protocol rules to process the L1-originated messages in order, and not arbitrarily reorder or skip them.&lt;&#x2F;li&gt;
+&lt;li&gt;If the sequencer completely halts or refuses to act, in theory a user (or third party) can initiate a &lt;strong&gt;trustless exit&lt;&#x2F;strong&gt; by submitting a zk-proof to the L1 contract capturing their funds and state after some time. The idea is that because zk proofs validate state transitions, you can bypass the sequencer. (However, in practice zkSync is not yet fully permissionless in who can submit proofs.) Because zkSync still restricts who can publish state roots, it does &lt;strong&gt;not&lt;&#x2F;strong&gt; fully satisfy Stage 1 under L2Beat’s framework.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;the-generic-forced-withdrawal-flow&quot;&gt;The Generic Forced Withdrawal Flow&lt;a class=&quot;zola-anchor&quot; href=&quot;#the-generic-forced-withdrawal-flow&quot; aria-label=&quot;Anchor link for: the-generic-forced-withdrawal-flow&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h3&gt;
+&lt;p&gt;Here’s a distilled “recipe” of how forced withdrawals are supposed to work across rollups:&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Craft the withdrawal transaction&lt;&#x2F;strong&gt; on L2 (or a call to a contract that releases your funds). For native tokens, this usually means calling the standard bridge contract’s method to initiate the exit.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Submit via L1&lt;&#x2F;strong&gt; — call the corresponding rollup’s L1 contract (e.g. Optimism’s &lt;code&gt;OptimismPortal&lt;&#x2F;code&gt;, Arbitrum’s inbox, zkSync’s mailbox) containing your withdrawal intent.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Inclusion &amp;amp; execution on L2&lt;&#x2F;strong&gt; — eventually that message is included in an L2 block (either by sequencer or forced inclusion). The withdrawal executes on L2.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;State posting to L1&lt;&#x2F;strong&gt; — the rollup posts the resulting state (or output root) on L1 (batch), so L1 “sees” the new L2 state.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Construct inclusion &#x2F; withdrawal proof&lt;&#x2F;strong&gt; (for optimistic rollups) — use proof machinery to show that your withdrawal transaction was indeed part of the posted state (via Merkle&#x2F;inclusion proofs).&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Finalization &#x2F; claim&lt;&#x2F;strong&gt; — after any challenge window passes (for optimistic rollups), call a function on L1 (e.g. &lt;code&gt;finalizeWithdrawal&lt;&#x2F;code&gt;) to actually move funds to L1 (or send tokens).&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;Depending on rollup type:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Optimistic&lt;&#x2F;strong&gt; → you need to wait the challenge period, and potentially submit fraud proofs &#x2F; proof-of-inclusion.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;zkRollups&lt;&#x2F;strong&gt; → because of validity proofs, invalid states are rejected outright; once your state is accepted, finalization is more straightforward.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;In practice, some steps require access to archive data, correct proofs, or state roots, so not trivial for a casual user.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;what-s-missing-today&quot;&gt;What’s Missing Today?&lt;a class=&quot;zola-anchor&quot; href=&quot;#what-s-missing-today&quot; aria-label=&quot;Anchor link for: what-s-missing-today&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;If you’ve read through the process above, you can already see the problem: it’s too complex for anyone outside of a developer circle. The contracts, inboxes, proofs, challenge periods, they’re technically there, but hidden behind low-level calls and infra requirements.&lt;&#x2F;p&gt;
+&lt;p&gt;A few tools and experiments have tried to bring parts of this vision to life, but none yet fully unlocks escape hatches for normal users.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Superbridge&lt;&#x2F;strong&gt; supports &lt;em&gt;forced withdrawals&lt;&#x2F;em&gt; as an escape hatch across rollups. But it’s tied into a bridging UX and isn’t a standalone, backend-agnostic tool.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Arbitrum Connect by WakeUp Labs&lt;&#x2F;strong&gt; is a front-end interface to force transaction inclusion during sequencer downtime on Arbitrum. This is closer to what I’m after, but it&#x27;s token specific.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;dYdX escape hatch&lt;&#x2F;strong&gt; (built by L2Beat with Starknet), but that’s not general-purpose.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;my-idea-an-open-source-escape-hatch&quot;&gt;My Idea: An Open-Source Escape Hatch&lt;a class=&quot;zola-anchor&quot; href=&quot;#my-idea-an-open-source-escape-hatch&quot; aria-label=&quot;Anchor link for: my-idea-an-open-source-escape-hatch&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;This led me to sketch an idea: a &lt;strong&gt;standard, open-source platform&lt;&#x2F;strong&gt; that makes forced transaction execution practical. Think of it as a universal “emergency exit app” for rollups.&lt;&#x2F;p&gt;
+&lt;div style=&quot;display: flex; justify-content: center;&quot;&gt;
+  &lt;img src=&quot;&#x2F;escape-hatch&#x2F;escape-hatch-cover.png&quot; alt=&quot;Escape hatch cover&quot; style=&quot;max-width: 60%; height: auto; border-radius: 8px;&quot; &#x2F;&gt;
+&lt;&#x2F;div&gt;
+&lt;p&gt;Here’s how I imagine it working:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Frontend&lt;&#x2F;strong&gt; → lightweight HTML&#x2F;JS app, hosted on IPFS, resolved via ENS for censorship-resistant access.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Backend logic&lt;&#x2F;strong&gt; → directly integrates with rollup contracts and libraries, minimal third-party dependencies.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Node access&lt;&#x2F;strong&gt; → uses rollup nodes to fetch proofs&#x2F;state; in failure scenarios, users could run their own node to complete the process.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Self-reliance&lt;&#x2F;strong&gt; → not dependent on any centralized service. Users could even spin up their own local copy.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Emergency mode&lt;&#x2F;strong&gt; → fallback CLI, works standalone with your own node if everything else is down.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Open source&lt;&#x2F;strong&gt; → MIT-licensed, transparent, auditable.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;To start, I’d scope it down to &lt;strong&gt;ETH and ERC-20 forced exits&lt;&#x2F;strong&gt;. Those are relatively simple and the most immediately useful. More complex cases (like exiting from a DeFi protocol position) will take time, since those require multi-step contract interactions and more complex proofs.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;what-s-next&quot;&gt;What’s next?&lt;a class=&quot;zola-anchor&quot; href=&quot;#what-s-next&quot; aria-label=&quot;Anchor link for: what-s-next&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;The purpose of this first blog is to frame the problem: escape hatches exist at the protocol level, but not at the user level. If we don’t solve that, we don’t really get the full promise of rollups.&lt;&#x2F;p&gt;
+&lt;p&gt;This will be the first part of a series:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Part 1&lt;&#x2F;strong&gt; (this post): the problem + research.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Part 2&lt;&#x2F;strong&gt;: a sketch&#x2F;spec of the platform.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Part 3&lt;&#x2F;strong&gt;: an MVP implementation (frontend + CLI).&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;I’d love for this to be collaborative. If you’re working on rollups, infra, or care about Ethereum’s trust model, I’d really appreciate thoughts, feedback, and contributions. my &lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;twitter.com&#x2F;0xdhruva&quot;&gt;twitter&lt;&#x2F;a&gt; DMs are open.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;acknowledgments&quot;&gt;Acknowledgments&lt;a class=&quot;zola-anchor&quot; href=&quot;#acknowledgments&quot; aria-label=&quot;Anchor link for: acknowledgments&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;Thanks to &lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;x.com&#x2F;0xRampey&quot;&gt;Rampey&lt;&#x2F;a&gt;, &lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;x.com&#x2F;dhaiwat10&quot;&gt;Dhaiwat&lt;&#x2F;a&gt; for their feedback and insights on this post.&lt;&#x2F;p&gt;
+</content>
+	</entry>
+	<entry xml:lang="en">
+		<title>my experience through the wintermute alpha challenge 2025</title>
+		<published>2025-09-09T00:00:00+00:00</published>
+		<updated>2025-09-09T00:00:00+00:00</updated>
+		<link href="https://0xdhruv.me/posts/wintermute-alpha-challenge-25/" type="text/html"/>
+		<id>https://0xdhruv.me/posts/wintermute-alpha-challenge-25/</id>
+		<content type="html">&lt;p&gt;&lt;img src=&quot;&#x2F;wintermute-challenge-25&#x2F;leaderboard.png&quot; alt=&quot;Wintermute alpha challenge 25 leaderboard&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;intro&quot;&gt;intro&lt;a class=&quot;zola-anchor&quot; href=&quot;#intro&quot; aria-label=&quot;Anchor link for: intro&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;this isn’t a polished technical writeup of every exploit, wintermute already publishes great case studies for that. instead, this is my own devlog-style account of how i approached the alpha challenge 2025: the tools i used, the way i thought through problems, where i got stuck, and what i learned along the way.&lt;&#x2F;p&gt;
+&lt;p&gt;i first heard about the challenge from someone who competed last year and later joined wintermute, which got me curious. i expected more research-analyst style questions (finding data, doing protocol-level case studies, etc.), but it turned out to be much more hands-on: debugging exploits, replaying attacks, decompiling bytecode, liquidations, and even a pvp liquidity game.&lt;&#x2F;p&gt;
+&lt;p&gt;this mix of research + execution hooked me instantly. i’m not a security researcher by background, but i like solving puzzles. this challenge became a sprint of learning defi internals under pressure.&lt;&#x2F;p&gt;
+&lt;p&gt;if you want the solutions, check this &lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;Frodan&#x2F;wintermute-alpha-2025-writeups&quot;&gt;case studies writeup&lt;&#x2F;a&gt; by @frodan. if you want to see how someone like me worked through them, right or wrong, then read on.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;tools-i-used&quot;&gt;tools i used&lt;a class=&quot;zola-anchor&quot; href=&quot;#tools-i-used&quot; aria-label=&quot;Anchor link for: tools-i-used&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;before diving into the case studies, here’s what i leaned on the most throughout the challenge:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;foundry (cast &amp;amp; forge)&lt;&#x2F;strong&gt; → my main swiss-army knife for onchain lookups, scripting transactions, and replaying attacks on forked mainnet.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;etherscan decompiler&lt;&#x2F;strong&gt; → surprisingly useful for challenges without verified source. being able to peek into opcodes and constants gave me just enough context to patch things.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;dune dashboards &amp;amp; explorers&lt;&#x2F;strong&gt; → for quick market &#x2F; protocol context. sometimes just scanning the right chart gave me clues.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;gpt 5&lt;&#x2F;strong&gt; → not for exact solutions (it was usually clueless about solving these puzzles), but for brainstorming, research, confirming syntax, and occasionally pointing me to the right docs.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;scratch notes + manual trial &amp;amp; error&lt;&#x2F;strong&gt; → honestly, a lot of this challenge came down to debugging small mistakes: wrong address, proxy vs implementation confusion, or under-estimating liquidity.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;having these at hand gave me speed, even if i didn’t know the protocol or exploit beforehand.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;obstacle-race&quot;&gt;obstacle race&lt;a class=&quot;zola-anchor&quot; href=&quot;#obstacle-race&quot; aria-label=&quot;Anchor link for: obstacle-race&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;this was the first real puzzle i tackled. the task was to “modify the bytecode and test in forked env.” at first i didn’t get it, how do you even change deployed bytecode? but then it clicked: the goal was to frontrun the attacker and deploy our own patched contract to rescue funds.&lt;&#x2F;p&gt;
+&lt;p&gt;i had never played with raw evm bytecode before. i used etherscan’s decompiler first, then dedaub decompiler to reverse the contract and noticed every function checked against a double-hashed &lt;code&gt;tx.origin&lt;&#x2F;code&gt;. the hash constants looked incomplete at first, until i realized they were split across two push opcodes: &lt;code&gt;32 bytes → 1 + 31 bytes&lt;&#x2F;code&gt; which was the tricky part in this challenge&lt;&#x2F;p&gt;
+&lt;p&gt;after a few failed attempts, i patched the constants with my own address, redeployed, and replayed the attack successfully.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;takeaway:&lt;&#x2F;strong&gt; this was my crash course in how far you can go with just bytecode + opcodes. i learned that even if the source isn’t verified, you still have options.&lt;&#x2F;p&gt;
+&lt;p&gt;the same concept applied to the “rabbithole” challenge as well&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;before-the-storm&quot;&gt;before the storm&lt;a class=&quot;zola-anchor&quot; href=&quot;#before-the-storm&quot; aria-label=&quot;Anchor link for: before-the-storm&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;this one revolved around liquidating a position in llamalend after the uwu lend hack. at first, i didn’t know llamalend’s flow, and the address provided in the challenge didn’t map clearly in my head.&lt;&#x2F;p&gt;
+&lt;p&gt;so my first step was just researching about the protocol: what llamalend is (a curve sub-product), how positions are tracked, and what exactly needed to be liquidated. once i had that clarity, the path became clear: i needed a flashloan to get curvUSD, convert, liquidate the position, and walk away with CURV.&lt;&#x2F;p&gt;
+&lt;p&gt;the real pain here wasn’t the logic, it was juggling liquidity and failed attempts. i first tried flashloaning CURV directly from curv’s flashlender (wrong, not deployed at that block). then i switched to balancer for flashloan and swaps &lt;code&gt;USDC → curvUSD → CURV&lt;&#x2F;code&gt;. the amounts were large enough that full liquidation wasn’t always possible, so i had to settle for partials. still, i managed to bag ~95k CURV.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;takeaway:&lt;&#x2F;strong&gt; working across protocols isn’t just “write contract and done.” the actual liquidity available at block height can break the flow.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;it-s-oiler&quot;&gt;it’s oiler&lt;a class=&quot;zola-anchor&quot; href=&quot;#it-s-oiler&quot; aria-label=&quot;Anchor link for: it-s-oiler&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;the name gave me a laugh once i realized it was “euler” in a scottish accent. i thought this would be simpler than others, but it ended up eating a ton of time.&lt;&#x2F;p&gt;
+&lt;p&gt;the challenge gave me a huge eWETH collateral position. my job: extract as much value as possible. at first, i thought i’d just borrow against it. but in reality, it turned into a search problem, finding which markets still had liquidity worth borrowing as most of them were drained after the hack.&lt;&#x2F;p&gt;
+&lt;p&gt;i wrote a script to scan all euler markets, filter out useless tokens, and find pools with real balances. then came the swapping part. uniswap v3 alone wasn’t enough, so i had to piece together multi-hop routes on v3 across different fee tiers, plus sushi&#x2F;pancake.&lt;&#x2F;p&gt;
+&lt;p&gt;i ended up splitting my collateral across multiple contracts to get around isolated borrowing restrictions. in total: 27 txs, ~3.8m recovered. not the most optimized work i could’ve gone for, but it got the job done.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;takeaway:&lt;&#x2F;strong&gt; i learned:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;scanning&#x2F;token filtering via scripts is critical, saves hours of manual trial.&lt;&#x2F;li&gt;
+&lt;li&gt;sometimes the “brute force” approach (multiple contracts, many txs) is fine if you’re under time pressure.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;pvp-competition&quot;&gt;pvp competition&lt;a class=&quot;zola-anchor&quot; href=&quot;#pvp-competition&quot; aria-label=&quot;Anchor link for: pvp-competition&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;this was unlike the others: not a puzzle, but a live strategy game. we had custom tokens with univ3 pools at different fee tiers, and wash trading was driving volume. the way to win was provide liquidity in the right ranges and farm fees or do FCFS challenge.&lt;&#x2F;p&gt;
+&lt;p&gt;i debated writing a script but with only 3–4 days left, i went manual. i inspected pools, spotted low-liquidity but decent-volume ones (like &lt;code&gt;acUSDT&#x2F;acAlpha 0.05%&lt;&#x2F;code&gt;), and dropped liquidity there. i also tested the bigger &lt;code&gt;0.3%&lt;&#x2F;code&gt; pool.&lt;&#x2F;p&gt;
+&lt;p&gt;my routine became: monitor ranges, swap between acUSDT ↔ acAlpha, reposition liquidity, and try not to bleed too much in fees myself. it was messy, sometimes i got pushed out of range, sometimes i lost on swaps, but i did end up earning a fair chunk of fees before losing it all at the end again 😅&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;takeaway:&lt;&#x2F;strong&gt; unlike the other challenges, this was about real-time decision making. i learned how hard active liquidity management is in practice, and how quickly fees you pay can eat into gains.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;other-highlights&quot;&gt;other highlights&lt;a class=&quot;zola-anchor&quot; href=&quot;#other-highlights&quot; aria-label=&quot;Anchor link for: other-highlights&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;dark amms&lt;&#x2F;strong&gt; → this was the first written case study i touched, but i didn’t finish during the challenge window. i learned that “dark” here didn’t mean privacy but hidden pricing logic: market maker operated contracts updated every block, no public frontends. the concept fascinated me because it’s so well-suited to solana’s low-latency blockspace, and i kept thinking about how something similar might work on L2s with flashblocks. even unfinished, it sparked new ideas for me.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;what if&lt;&#x2F;strong&gt; → this was the challenge i sunk the most time into without a neat solution. the task was open-ended: find skewed pools, rescue as much stETH as possible. i mapped the main dexes (curve, balancer, uniswap), spotted imbalances, and drafted scripts for cross-dex swaps. but execution was messy - low rates, failed swaps, partial arb opportunities. with just a few hours left, i chose to move on.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;too old for optimising&lt;&#x2F;strong&gt; → this one clicked late but fast. i dug into yearn’s yUSDC vaults, realized rebalancing could push funds(~700k USDC) into aave v1, and then leveraged my existing usdt collateral to top up the usdc pool. it wasn’t the cleanest trick, but it worked and got me across the line.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;final-thoughts&quot;&gt;final thoughts&lt;a class=&quot;zola-anchor&quot; href=&quot;#final-thoughts&quot; aria-label=&quot;Anchor link for: final-thoughts&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;across all the challenges, i made plenty of mistakes, using wrong addresses, mixing up proxies, chasing liquidity in the wrong pools. but then I slowed down, did debugging, and figured things out.&lt;&#x2F;p&gt;
+&lt;p&gt;the biggest things i took away from this sprint:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;tools &amp;gt; knowledge&lt;&#x2F;strong&gt; → knowing how to use cast, decompilers, explorers mattered more than memorizing protocol docs. with ai tools like chatgpt and claude code, the process becomes simpler and can be sped up.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;process matters&lt;&#x2F;strong&gt; → mapping a protocol before touching contracts saved me from wild goose chases.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;curiosity wins&lt;&#x2F;strong&gt; → not being a “security researcher” didn’t matter. being willing to try, fail, and try again mattered more.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;i loved participating in alpha challenge 2025. it pushed me into bytecode, flashloans, liquidations, and liquidity management in ways i hadn’t done before. more than anything, it showed me how much i enjoy this type of puzzle-solving. i ended up ranking 17th among 1000+ participants in the leaderboard with a score of 500, not bad ig. i’ll definitely keep joining these competitions and keep learning in public.&lt;&#x2F;p&gt;
+&lt;p&gt;thanks to wintermute for organising, and to everyone who shared their own approaches.&lt;&#x2F;p&gt;
+&lt;p&gt;connect with me on &lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;twitter.com&#x2F;0xdhruva&quot;&gt;twitter&lt;&#x2F;a&gt; if you want to chat more about defi, smart contracts, or puzzles like these.&lt;&#x2F;p&gt;
+</content>
+	</entry>
+	<entry xml:lang="en">
+		<title>Climate‑Resilient Loans: A Simple Spin on Multiverse Finance</title>
+		<published>2025-08-22T00:00:00+00:00</published>
+		<updated>2025-08-22T00:00:00+00:00</updated>
+		<link href="https://0xdhruv.me/posts/climate-resillient-credit/" type="text/html"/>
+		<id>https://0xdhruv.me/posts/climate-resillient-credit/</id>
+		<content type="html">&lt;p&gt;&lt;img src=&quot;&#x2F;multiverse-finance&#x2F;cover.png&quot; alt=&quot;Multiverse Finance Cover&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;introduction&quot;&gt;Introduction&lt;a class=&quot;zola-anchor&quot; href=&quot;#introduction&quot; aria-label=&quot;Anchor link for: introduction&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h1&gt;
+&lt;p&gt;Imagine a loan that adapts to the weather. That’s the simple idea I’m exploring today using weather‑conditioned tokens as collateral to give small farmers a financial buffer when they need it most. Inspired by the &lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;www.paradigm.xyz&#x2F;2025&#x2F;05&#x2F;multiverse-finance&quot;&gt;Multiverse Finance&lt;&#x2F;a&gt; concept by Dave White at Paradigm, this is a use‑case I specced out while applying for the Paradigm Fellowship. Multiverse Finance lets you create verses (parallel universes) that only have value if specific conditions are met, conditional money that disappears if the condition fails. Let me show you how I think it might work and why it could actually help farmers instead of just creating another betting market.&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;the-challenge&quot;&gt;The Challenge&lt;a class=&quot;zola-anchor&quot; href=&quot;#the-challenge&quot; aria-label=&quot;Anchor link for: the-challenge&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h1&gt;
+&lt;p&gt;For smallholder farmers, income isn’t just seasonal — it’s unpredictable. One year’s monsoon can mean a good harvest; a slightly delayed or brief rain can spell disaster.&lt;&#x2F;p&gt;
+&lt;p&gt;The downside here is much worse than the upside is good. A bad weather year can wipe out a farmer&#x27;s entire income and push them into debt, while a good year might only provide modest gains above normal. Traditional loans make this asymmetry worse by demanding repayment regardless of outcomes.&lt;&#x2F;p&gt;
+&lt;p&gt;So what if the credit system itself could be flexible, responsive to the climate instead of rigid ?&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;the-idea&quot;&gt;The Idea&lt;a class=&quot;zola-anchor&quot; href=&quot;#the-idea&quot; aria-label=&quot;Anchor link for: the-idea&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h1&gt;
+&lt;p&gt;Here’s the core concept of Weather-Conditioned Collateral, instead of ordinary collateral, farmers enter a “verse” tied to weather outcomes. For instance:&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;LowRain Verse&lt;&#x2F;strong&gt; - where LowRainUSD tokens are worth 1$ and verse survives only if total rainfall in the season is below, say, 20 cm.&lt;&#x2F;p&gt;
+&lt;p&gt;Farmer uses these tokens as collateral to borrow from other participants in the same verse. Everyone in this verse is betting on the same weather outcome. If rain is scarce (bad harvest), the verse survives, both collateral and debt remain valid, giving the farmer liquidity when they need it most. If rain is abundant (good harvest), the entire verse disappears, collateral, debt, everything vanishes.&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;how-it-plays-out&quot;&gt;How It Plays Out&lt;a class=&quot;zola-anchor&quot; href=&quot;#how-it-plays-out&quot; aria-label=&quot;Anchor link for: how-it-plays-out&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h1&gt;
+&lt;p&gt;Inside a verse, tokens behave in a very particular way: &lt;strong&gt;1 LowRainUSD = $1 only if the verse survives&lt;&#x2F;strong&gt;. That makes the setup look speculative at first glance, the farmer is essentially declaring &lt;em&gt;“I think drought is a real possibility”&lt;&#x2F;em&gt; when they mint these tokens.&lt;&#x2F;p&gt;
+&lt;p&gt;But this isn&#x27;t the farmer betting against themselves. Think of it as insurance, that pays out exactly when drought hurts them most. This flips the traditional risk model: instead of being vulnerable when weather goes wrong, farmers are protected when they need it most.&lt;&#x2F;p&gt;
+&lt;p&gt;Let’s walk through two clear outcomes:&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Worst‑Case (Low Rainfall):&lt;&#x2F;strong&gt;
+&lt;ul&gt;
+&lt;li&gt;Drought Happens, so the verse survives.&lt;&#x2F;li&gt;
+&lt;li&gt;Collateral (LowRainUSD) remains valid, as does the borrowed amount.&lt;&#x2F;li&gt;
+&lt;li&gt;The farmer still holds liquidity despite a poor harvest.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Best‑Case (High Rainfall):&lt;&#x2F;strong&gt;
+&lt;ul&gt;
+&lt;li&gt;Verse disappears&lt;&#x2F;li&gt;
+&lt;li&gt;Neither collateral nor loan hold.&lt;&#x2F;li&gt;
+&lt;li&gt;The farmer loses just the initial collateral but reaps a full harvest.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;h1 id=&quot;why-it-matters&quot;&gt;Why It matters&lt;a class=&quot;zola-anchor&quot; href=&quot;#why-it-matters&quot; aria-label=&quot;Anchor link for: why-it-matters&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h1&gt;
+&lt;p&gt;This approach offers several advantages:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;It removes liquidation risk during bad harvests, loans vanish with collateral if the verse doesn’t hold.&lt;&#x2F;li&gt;
+&lt;li&gt;It shifts credit from being rigid to being &lt;strong&gt;belief-driven&lt;&#x2F;strong&gt;: farmers borrow based on their informed view of the season.&lt;&#x2F;li&gt;
+&lt;li&gt;For lenders, the logic is just as clear: they only lend when they think a verse is likely to survive, and they accept that in “bad worlds” their lent amount disappears&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h1 id=&quot;closing-notes-future-work&quot;&gt;Closing notes &amp;amp; Future Work&lt;a class=&quot;zola-anchor&quot; href=&quot;#closing-notes-future-work&quot; aria-label=&quot;Anchor link for: closing-notes-future-work&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h1&gt;
+&lt;p&gt;This is just one example of how Multiverse Finance could stretch beyond speculative trading into real-world applications. I&#x27;m excited about exploring how crypto primitives might unlock resilience for communities most exposed to risk.&lt;&#x2F;p&gt;
+&lt;p&gt;There are several design challenges to work through, like what tokens farmers should borrow against their weather collateral, how to price these tokens before weather outcomes are known, and making the mechanics simple enough for real-world use.&lt;&#x2F;p&gt;
+&lt;p&gt;If you&#x27;re working on similar problems, or have thoughts on making this more practical, I&#x27;d love to hear from you.&lt;&#x2F;p&gt;
+&lt;p&gt;connect with me on &lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;twitter.com&#x2F;0xdhruva&quot;&gt;twitter&lt;&#x2F;a&gt; if you want to chat more about defi, smart contracts, or puzzles like these.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;acknowledgments&quot;&gt;Acknowledgments&lt;a class=&quot;zola-anchor&quot; href=&quot;#acknowledgments&quot; aria-label=&quot;Anchor link for: acknowledgments&quot; style=&quot;visibility: hidden;&quot;&gt;&lt;&#x2F;a&gt;
+&lt;&#x2F;h2&gt;
+&lt;p&gt;Thanks to &lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;x.com&#x2F;Vladfdp&quot;&gt;Vlad&lt;&#x2F;a&gt; and &lt;a rel=&quot;nofollow noreferrer&quot; href=&quot;https:&#x2F;&#x2F;x.com&#x2F;timjrobinson&quot;&gt;Tim Robinson&lt;&#x2F;a&gt; for their feedback and insights on this post.&lt;&#x2F;p&gt;
+</content>
+	</entry>
+</feed>
