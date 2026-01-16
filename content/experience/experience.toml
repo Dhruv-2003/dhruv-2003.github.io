@@ -1,6 +1,16 @@
 [[collection]]
 type = "card"
-title = "Contributor"
+title = "Software Engineer, Rollup Product"
+subtitle = "Conduit"
+date = "2026-Present"
+content = """
+Working on rollup infrastructure and EVM-level customizations. My work focuses on building core rollup primitives, precompiles, and integrations that make it easier to launch, operate, and scale Ethereum rollups.
+"""
+
+
+[[collection]]
+type = "card"
+title = "Software Engineer, Contributor"
 subtitle = "ZkEmail"
 date = "Feb-May 2025"
 img = "img/zkemail-logo.png"
@@ -13,7 +23,7 @@ content = """
 
 [[collection]]
 type = "card"
-title = "Research Engineer"
+title = "Software Engineer, Research"
 subtitle = "Stackr Labs"
 date = "2024"
 img = "img/stackr.png"
@@ -28,7 +38,7 @@ content = """
 
 [[collection]]
 type = "card"
-title = "Web3 Engineer"
+title = "Software Engineer, Web3"
 subtitle = "Owlearn"
 date = "2023"
 content = """

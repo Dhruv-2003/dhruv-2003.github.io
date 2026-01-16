@@ -26,9 +26,9 @@ recent_more_text = "more »"
 date_format = "%b %-d, %Y"
 +++
 
-Hi, I'm Dhruv, an engineer passionate about research in blockchain, cryptography, and decentralized systems. My interests include Zero Knowledge , Modular Blockchain, and DeFi.
+Hi, I'm Dhruv, an engineer passionate about research in blockchain, cryptography, and decentralized systems. My interests include Zero Knowledge, Modular Blockchain, and DeFi.
 
-Currently, I’m experimenting & building systems in Rust, deepening my understanding of protocols and core ethereum architecture. As a three-time ETHGlobal finalist and a frequent hackathon participant, I’m always eager to take on new challenges and push the boundaries of what's possible.
+Currently, I'm working as an Engineer at [Conduit](https://conduit.xyz), building rollup infrastructure. Alongside, I'm experimenting & building systems, deepening my understanding of protocols and core Ethereum architecture. As a three-time ETHGlobal finalist and a frequent hackathon participant, I'm always eager to take on new challenges and push the boundaries of what's possible.
 
 I like travelling and photography, and I'm always up for a good conversation about the latest in tech or engineering. Feel free to reach out.
 
