@@ -1,5 +1,5 @@
 +++
-title = "How I Accidentally Built an Agentic Commerce Spec"
+title = "How I accidentally built the first agentic commerce spec, and almost missed why"
 description = "Building pipegate: a payment middleware spec for machine-to-machine transactions, missing the 402 status code, and learning about market timing through x402."
 date = 2026-07-01
 updated = 2026-07-01
@@ -122,4 +122,5 @@ i'm still bullish. and i still think payment method modularity is going to matte
 
 **if i redo this:** i anchor around the 402 from day one. i make the simplest possible version of the spec and ship that first. i think harder about distribution before i think about feature completeness.
 
+here are some links if u'd like to read more about it -
 _pipegate docs: docs.pipegate.0xdhruv.me — landing page: pipegate.0xdhruv.me_
