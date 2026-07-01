@@ -1,0 +1,47 @@
+[[collection]]
+type = "entry"
+title = "Zenny"
+link = "https://ethglobal.com/showcase/zenny-ynkim"
+subtitle = "earn passive returns on stablecoins without losing custody. Activate zen-mode, earn pennies with 1inch limit order protocol"
+
+[[collection]]
+type = "entry"
+title = "txFusion"
+link = "https://ethglobal.com/showcase/txfusion-mytji"
+subtitle = "a platform to allow user to perform multiple transaction in a single call and signature using EIP5792"
+
+[[collection]]
+type = "entry"
+title = "cryptic cloak"
+link = "https://ethglobal.com/showcase/crypticcloak-stealth-micro-rollup-a3mai"
+subtitle = "a stealth address based privacy enabling micro rollup for all evm chains"
+
+[[collection]]
+type = "entry"
+title = "wasp."
+link = "https://devpost.com/software/wasp"
+subtitle = "fully automated investment platform to offer CLM & DCA"
+
+[[collection]]
+type = "entry"
+title = "rocketai"
+link = "https://devpost.com/software/rocketai"
+subtitle = "platform to create AI agents and enable crypto monetisation"
+
+[[collection]]
+type = "entry"
+title = "onboardr"
+link = "https://ethglobal.com/showcase/crypticcloak-stealth-micro-rollup-a3mai"
+subtitle = "onchain marketing tool to onboard users to web3 via emails"
+
+[[collection]]
+type = "entry"
+title = "supercharger"
+link = "https://github.com/Dhruv-2003/SuperCharger24"
+subtitle = "storage provider explorer & raas worker dashboard for filecoin ecosystem to make storage deals seamless"
+
+[[collection]]
+type = "entry"
+title = "stark shuriken"
+link = "https://ethglobal.com/showcase/stark-shuriken-bi2qt"
+subtitle = "debugging and simulation tool for starknet developers"
