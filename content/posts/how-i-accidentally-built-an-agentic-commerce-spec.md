@@ -1,8 +1,8 @@
 +++
 title = "How I Accidentally Built an Agentic Commerce Spec"
 description = "Building pipegate: a payment middleware spec for machine-to-machine transactions, missing the 402 status code, and learning about market timing through x402."
-date = 2026-01-07
-updated = 2026-01-07
+date = 2026-07-01
+updated = 2026-07-01
 # draft = true  # Uncomment to keep as draft
 
 [taxonomies]
