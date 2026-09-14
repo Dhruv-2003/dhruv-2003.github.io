@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  
+  
+    
+  
+  <meta name="description" content="Building pipegate: a payment middleware spec for machine-to-machine transactions, missing the 402 status code, and learning about market timing through x402.">
+
+  <title>How I accidentally built the first agentic commerce spec, and almost missed why</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="https://0xdhruv.me/img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://0xdhruv.me/img/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://0xdhruv.me/img/apple-touch-icon.png">
+  
+  <style>
+
+  /* light mode colors */
+  body {
+    --primary-color: #5871a2;
+    --primary-pale-color: #5871a233;
+    --primary-decoration-color: #5871a210;
+    --bg-color: #ffffff;
+    --text-color: #2f3030;
+    --text-pale-color: #767676;
+    --text-decoration-color: #a9a9a9;
+    --highlight-mark-color: #5f75b020;
+
+    --callout-note-color: #5871a2;
+    --callout-tip-color: #268556;
+    --callout-important-color: #885fc9;
+    --callout-warning-color: #ab6632;
+    --callout-caution-color: #c64e4e;
+  }
+
+  /* dark mode colors */
+  body.dark {
+    --primary-color: #6f8fd1;
+    --primary-pale-color: #6f8fd166;
+    --primary-decoration-color: #6f8fd112;
+    --bg-color: #1c1c1c;
+    --text-color: #c1c1c1;
+    --text-pale-color: #848484;
+    --text-decoration-color: #5f5f5f;
+    --highlight-mark-color: #8296cb3b;
+
+    --callout-note-color: #6f8fd1;
+    --callout-tip-color: #47976f;
+    --callout-important-color: #9776cd;
+    --callout-warning-color: #ad7a52;
+    --callout-caution-color: #d06161;
+  }
+
+  /* typography */
+  body {
+    --main-font: ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --code-font: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+    --homepage-max-width: 768px;
+    --main-max-width: 768px;
+    --avatar-size: 60px;
+    --font-size: 16px;
+    --line-height: 1.75;
+    --img-border-radius: 0px;
+    --detail-border-radius: 0px;
+    --dark-mode-img-brightness: 0.75;
+    --dark-mode-chart-brightness: 0.75;
+    --inline-code-border-radius: 2px;
+    --inline-code-bg-color: var(--primary-decoration-color);
+    --block-code-border-radius: 0px;
+    --block-code-border-color: var(--primary-color);
+    --detail-border-color: var(--primary-color);
+  }
+
+</style>
+
+  <link rel="stylesheet" href="https://0xdhruv.me/main.css">
+  
+
+<link id="hl" rel="stylesheet" type="text/css" href="/hl-light.css" />
+
+
+
+  <script
+  defer
+  src="https://analytics.umami.0xdhruv.me/script.js"
+  data-website-id="5b7d8240-d710-4d0d-a762-1227c353ac88"
+></script>
+
+</head>
+
+<body class="post">
+  
+  
+<div id="wrapper">
+  <div id="blank"></div>
+  <aside>
+    
+    
+    <nav>
+      <ul>
+        
+        <li>
+          <a class="h2" href="#agentic-commerce-spec-cover">agentic-commerce-spec-cover</a>
+          
+        </li>
+        
+        <li>
+          <a class="h2" href="#context-why-this-felt-urgent">context: why this felt urgent</a>
+          
+        </li>
+        
+        <li>
+          <a class="h2" href="#bangkok-the-all-nighter-spec">bangkok: the all-nighter spec</a>
+          
+        </li>
+        
+        <li>
+          <a class="h2" href="#building-the-real-spec">building the real spec</a>
+          
+        </li>
+        
+        <li>
+          <a class="h2" href="#what-i-completely-missed-the-402">what i completely missed: the 402</a>
+          
+        </li>
+        
+        <li>
+          <a class="h2" href="#how-the-spec-grew">how the spec grew</a>
+          
+        </li>
+        
+        <li>
+          <a class="h2" href="#when-x402-launched">when x402 launched</a>
+          
+        </li>
+        
+        <li>
+          <a class="h2" href="#on-timing-and-what-actually-matters">on timing and what actually matters</a>
+          
+        </li>
+        
+        <li>
+          <a class="h2" href="#where-i-think-this-goes">where i think this goes</a>
+          
+        </li>
+        
+      </ul>
+    </nav>
+    
+    
+    <button id="back-to-top" aria-label="back to top">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-up"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+
+    </button>
+    
+  </aside>
+  <main>
+    
+<header>
+  <nav>
+    <a href="https:&#x2F;&#x2F;0xdhruv.me&#x2F;posts">← Back</a>
+  </nav>
+</header>
+
+
+    <div>
+      
+      
+      
+      
+      <div id="copy-cfg" style="display: none;" data-copy-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
+" data-check-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
+"></div>
+      
+      <article class="prose">
+        <h1>How I accidentally built the first agentic commerce spec, and almost missed why</h1>
+        <div id="post-info">
+          <div id="date">
+            <span id="publish">Jul 1, 2026</span>
+            </div>
+
+          
+          <div id="tags">
+            <a class="instant" href="https://0xdhruv.me/tags/agentic"><span>#</span>agentic</a><a class="instant" href="https://0xdhruv.me/tags/payments"><span>#</span>payments</a><a class="instant" href="https://0xdhruv.me/tags/x402"><span>#</span>x402</a><a class="instant" href="https://0xdhruv.me/tags/pipegate"><span>#</span>pipegate</a>
+          </div>
+          
+        </div>
+
+        
+        
+
+        
+
+        <h2 id="agentic-commerce-spec-cover"><img src="/agentic-commerce-spec/cover.png" alt="agentic-commerce-spec-cover" /><a class="zola-anchor" href="#agentic-commerce-spec-cover" aria-label="Anchor link for: agentic-commerce-spec-cover" style="visibility: hidden;"></a>
+</h2>
+<p>it was october 2024. i came across a thread from georgios talking about how broken API access was for developers juggling 10 different API keys and credit systems, and for providers who couldn't easily accept global payments without losing 3-4% to fees or losing customers who didn't want a full subscription. the core idea was simple: pay per use, no friction, no keys.</p>
+<p>somewhere in that thread, someone had already built a rust side component — a wrapper around an axiom server that gated incoming requests based on payment channel config. it was half-cooked. no clear spec, no client-side story, no onchain detail. but the shape of the idea was right.</p>
+<p>i wanted to finish it.</p>
+<h2 id="context-why-this-felt-urgent">context: why this felt urgent<a class="zola-anchor" href="#context-why-this-felt-urgent" aria-label="Anchor link for: context-why-this-felt-urgent" style="visibility: hidden;"></a>
+</h2>
+<p>at this point, i wasn't thinking about agents at all. this was purely a developer UX problem. API keys are annoying. subscriptions are overkill for small usage. providers leave money on the table because their payment stack doesn't reach everyone.</p>
+<p>i was also learning rust at the time, coming off my last role, i'd been wanting to contribute more to open source, and rust made sense given how much of the infra i cared about (reth, helios, alloy) was written in it. the crypto devtool ecosystem in rust was genuinely strong, and the memory/thread control was interesting. steep learning curve, but worth it.</p>
+<p>the timing felt right to try something real with it.</p>
+<h2 id="bangkok-the-all-nighter-spec">bangkok: the all-nighter spec<a class="zola-anchor" href="#bangkok-the-all-nighter-spec" aria-label="Anchor link for: bangkok-the-all-nighter-spec" style="visibility: hidden;"></a>
+</h2>
+<p>EthGlobal Bangkok 2024, happening during Devcon Thailand — seemed like the right place to test this. i convinced my teammate kushagra to build with me on it, which itself took some work. even i was finding it hard to articulate <em>why</em> this was a big deal at the time.</p>
+<p>we set ourselves a tight scope for the hackathon: an end-to-end flow. a typescript client wrapping axios with payment channel logic built in, a <code>ChannelFactory</code> and <code>PaymentChannel</code> smart contract deployed on Base, and a rust server middleware that verified incoming requests and routed them accordingly. the consumer would deposit USDC into a payment channel upfront and use it across concurrent API calls.</p>
+<p>we pulled an all-nighter to get a working POC together. demoed it to the Base and Circle teams. they liked the vision. we won the Circle bounty.</p>
+<p>getting back from bangkok, i knew this needed a proper version.</p>
+<h2 id="building-the-real-spec">building the real spec<a class="zola-anchor" href="#building-the-real-spec" aria-label="Anchor link for: building-the-real-spec" style="visibility: hidden;"></a>
+</h2>
+<p>the post-hackathon phase is where the actual thinking happened.</p>
+<p>i went deep on tokio internals to figure out the right abstraction layer for the server side. on the client side i studied http libs like axios carefully. i also made a call early: typescript and rust as the two supported environments. most end user apps were on some TS framework — Next, Vue, etc. rust was the right choice for a different reason though: it compiles to WASM, which means one implementation that ports to almost anything. i built in <code>wasm32</code> target support from the start even though it added real effort, because i knew it was the right call.</p>
+<p>the flow i settled on had three steps for developers to start accepting payments. the consumer creates a payment channel onchain, and it's stored as config. on every subsequent request the client middleware auto-adds the required headers. the server middleware extracts and verifies them, routes the request, auto-deducts the balance, and returns the updated state as a response header. near end of channel lifecycle, the provider extracts funds from the contract using the last agreed state + consumer signature. remaining balance refunds automatically.</p>
+<p>i turned this into an excalidraw flow and shared it on twitter</p>
+<div style="display: flex; justify-content: center;">
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">i hate api keys,<br><br>and as a web3 dev, i tried to solve this with one-way payment channels + stablecoins<br><br>one wallet, zero api keys, simple and fast API monetisation with USDC on <a href="https://x.com/base?ref_src=twsrc%5Etfw">@base</a><br><br>inspired from <a href="https://x.com/gakonst?ref_src=twsrc%5Etfw">@gakonst</a> tweets<br><br>here is how it looks like 👇 <a href="https://t.co/3o0OBUOm5f">pic.twitter.com/3o0OBUOm5f</a></p>&mdash; Dhruv (@0xdhruva) <a href="https://x.com/0xdhruva/status/1867176496542159103?ref_src=twsrc%5Etfw">December 12, 2024</a></blockquote> <script async src="https://platform.x.com/widgets.js" charset="utf-8"></script>
+</div>
+<p>it blew up more than i expected. people liked the idea, shared use cases, gave feedback. first real validation that i was building something real.</p>
+<h2 id="what-i-completely-missed-the-402">what i completely missed: the 402<a class="zola-anchor" href="#what-i-completely-missed-the-402" aria-label="Anchor link for: what-i-completely-missed-the-402" style="visibility: hidden;"></a>
+</h2>
+<p>here's the thing i didn't see until much later.</p>
+<p>when a consumer hit an endpoint without a valid payment channel, my server returned an error — a 400 or 401. i had the right instincts about <em>what</em> to communicate: "you need to pay to access this." but i never noticed the HTTP status code that had been sitting there for decades, designed exactly for this.</p>
+<p><strong>402 Payment Required.</strong></p>
+<p>dormant since the early web. waiting. and i was right next to it the whole time.</p>
+<p>the irony: i <em>did</em> use 402 for one case — insufficient balance. but i never connected the dots that it should anchor the entire spec. when coinbase launched x402 in may 2025, the thing that immediately clicked wasn't the spec itself. it was the name. they saw what i hadn't.</p>
+<p>that's a useful lesson about how tunnel vision works when you're deep in building. i was so focused on the payment mechanics that i missed the protocol-level framing that would have made the whole thing click for people immediately.</p>
+<h2 id="how-the-spec-grew">how the spec grew<a class="zola-anchor" href="#how-the-spec-grew" aria-label="Anchor link for: how-the-spec-grew" style="visibility: hidden;"></a>
+</h2>
+<p>between bangkok and the x402 launch, i kept extending pipegate.</p>
+<p>i added one-time payment transactions — came out of a conversation with georgios about blockchain node snapshots. providers hosting snapshots for external node runners to sync faster. the fit was obvious: pay once, get access to the resource. works for datasets, reports, files, day passes, credit bundles.</p>
+<p>i got into superfluid guild and worked on adding streaming payments. this opened up ongoing API access without monthly billing — live data consumption (market prices, IoT), extended compute or storage services that run over time. subscription-like without the subscription overhead.</p>
+<p>by this point the spec felt complete: payment channels for concurrent usage, one-time tx for access tokens, streams for ongoing access. three modes, one middleware interface.</p>
+<h2 id="when-x402-launched">when x402 launched<a class="zola-anchor" href="#when-x402-launched" aria-label="Anchor link for: when-x402-launched" style="visibility: hidden;"></a>
+</h2>
+<p>may 6, 2025. coinbase announced x402.</p>
+<p>i read the spec the day it dropped. the 402 status code as the anchor, immediately obvious once you see it. the request/response format was clean and well-thought-out. genuinely good work on the standardization side.</p>
+<p>what i didn't like: the relayer model, and the fact that it only supported token transfers. that's useful for a narrow set of cases, but it cuts out most of the use cases pipegate was built around streaming, one-time access, anything more nuanced than "transfer X tokens."</p>
+<p>so i added x402 support to pipegate — but only the parts that made sense. 402 status code, same request/response format. but no relayer, and full payment method modularity intact. felt like the right synthesis.</p>
+<h2 id="on-timing-and-what-actually-matters">on timing and what actually matters<a class="zola-anchor" href="#on-timing-and-what-actually-matters" aria-label="Anchor link for: on-timing-and-what-actually-matters" style="visibility: hidden;"></a>
+</h2>
+<p>here's what building this early taught me about market timing.</p>
+<p>being right about the problem doesn't mean being right about the moment. i spent three months on a spec that i believed in, in a space where the infrastructure — user onboarding, wallet abstraction, mainstream agentic adoption wasn't ready yet. the idea was right. the timing was early.</p>
+<p>coinbase shipped x402 with simpler payment mechanics but infinitely more distribution. tempo launched MPP with stripe codevelopment and credit card + lightning support. georgios, whose tweet started this whole thing, was part of that. full circle.</p>
+<p>what i learned: in protocol adoption, <em>simplicity of the initial spec beats completeness</em>. x402's v1 is deliberately narrow. that's a feature. pipegate tried to solve every payment mode at once, which made the idea harder to explain and harder to adopt even when the engineering was solid.</p>
+<p>i also learned that early market signals are real and worth trusting. in late 2024, the pieces were all there — agentic infra growing fast, developers unhappy with API billing, onchain payments maturing. i was reading them correctly. i just didn't know yet that "reading the signal right" and "being the one who builds the standard" are two different things.</p>
+<h2 id="where-i-think-this-goes">where i think this goes<a class="zola-anchor" href="#where-i-think-this-goes" aria-label="Anchor link for: where-i-think-this-goes" style="visibility: hidden;"></a>
+</h2>
+<p>agentic payments are not a question mark anymore. the demand is obvious, more autonomous systems means more machine-to-machine transactions that need a payment layer. what's still unsolved is the onboarding layer: getting normal users (and normal developers) to a place where this is as easy as stripe.</p>
+<p>the specs exist now. x402, MPP, pipegate's approach. the question is which abstraction layer wins for which use case, and whether the right UX gets built on top.</p>
+<p>i'm still bullish. and i still think payment method modularity is going to matter a lot as the use cases get weirder and more varied.</p>
+<p><strong>net result:</strong> a real spec, a working library with 6.5k downloads, a lesson about tunnel vision (hi, 402), and a front-row seat to watching a space i believed in early start to matter at scale.</p>
+<p><strong>if i redo this:</strong> i anchor around the 402 from day one. i make the simplest possible version of the spec and ship that first. i think harder about distribution before i think about feature completeness.</p>
+<p>here are some links if u'd like to read more about it -
+<em>pipegate docs: docs.pipegate.0xdhruv.me — landing page: pipegate.0xdhruv.me</em></p>
+
+      </article>
+
+      
+      
+
+      
+      
+    </div>
+
+    
+
+
+<footer>
+  <div class="left">
+    <div class="copyright">
+      © 2026 Dhruv
+      
+      <span>|</span>
+      Built with <a href="https://www.getzola.org" rel="noreferrer" target="_blank">zola</a> and <a href="https://github.com/isunjn/serene" rel="noreferrer" target="_blank">serene</a>
+      
+    </div>
+  </div>
+
+  <div class="right">
+    
+    
+      
+    
+    
+    <a id="rss-btn" href="https://0xdhruv.me/posts/feed.xml">RSS</a>
+    
+    
+
+    
+  </div>
+</footer>
+
+
+
+
+<dialog id="rss-mask">
+  <div>
+    <a href="https:&#x2F;&#x2F;0xdhruv.me&#x2F;posts&#x2F;feed.xml">https:&#x2F;&#x2F;0xdhruv.me&#x2F;posts&#x2F;feed.xml</a>
+    
+    
+    <button autofocus aria-label="copy" data-link="https:&#x2F;&#x2F;0xdhruv.me&#x2F;posts&#x2F;feed.xml" data-copy-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
+" data-check-icon="&lt;svg xmlns=&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; viewBox=&quot;0 0 24 24&quot; width=&quot;18&quot; height=&quot;18&quot;&gt;&lt;path d=&quot;M10.0007 15.1709L19.1931 5.97852L20.6073 7.39273L10.0007 17.9993L3.63672 11.6354L5.05093 10.2212L10.0007 15.1709Z&quot; fill=&quot;currentColor&quot;&gt;&lt;&#x2F;path&gt;&lt;&#x2F;svg&gt;
+" >
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z" fill="currentColor"></path></svg>
+
+    </button>
+  </div>
+</dialog>
+
+
+
+  </main>
+</div>
+
+  
+<script src="/js/lightense.min.js"></script>
+
+
+  <script src="https://0xdhruv.me/js/main.js"></script>
+</body>
+
+</html>

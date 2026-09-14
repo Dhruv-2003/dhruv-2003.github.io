@@ -1,0 +1,51 @@
++++
+title = "Your Post Title"
+description = "A brief description of your post"
+date = 2025-08-12  # Change to actual date
+updated = 2025-08-12  # Optional: update when you edit
+# draft = true  # Uncomment to keep as draft
+
+[taxonomies]
+categories = ["technology"]  # e.g., "blockchain", "web3", "programming"
+tags = ["tag1", "tag2"]  # relevant tags
+
+[extra]
+lang = "en"
+toc = true  # table of contents
+comment = false  # enable comments
+copy = true  # copy code button
+outdate_alert = true  # show outdated alert
+outdate_alert_days = 120  # days before showing alert
+math = false  # enable math rendering
+mermaid = false  # enable mermaid diagrams
+featured = false  # feature on homepage
+reaction = false  # enable reactions
++++
+
+Your post content goes here...
+
+## Example Section
+
+You can use all standard Markdown features:
+
+- Bullet points work great
+- Multiple items
+- With proper formatting
+
+### Code Examples
+
+```rust
+fn main() {
+    println!("Hello, world!");
+}
+```
+
+### Links and Images
+
+[Link example](https://example.com)
+
+Remember to:
+1. Update the date in the frontmatter
+2. Set appropriate categories and tags
+3. Remove `draft = true` when ready to publish
+4. Delete this template file when you create your first real post

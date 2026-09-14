@@ -1,0 +1,47 @@
++++
+title = "Your External Blog Post Title"
+description = "Brief description of what this post covers"
+date = 2025-08-13  # Use the actual publication date
+updated = 2025-08-13
+# draft = true  # Remove this when ready to publish
+
+[taxonomies]
+categories = ["blockchain"]  # Adjust as needed
+tags = ["external", "publication"]  # Add relevant tags
+
+[extra]
+lang = "en"
+toc = false  # Since this redirects to external content
+comment = false
+copy = false
+outdate_alert = false
+math = false
+mermaid = false
+featured = true  # Highlight external publications
+reaction = false
+
+# External post configuration
+external_url = "https://your-external-blog-link.com"
+external_platform = "Medium"  # or "Dev.to", "Substack", etc.
++++
+
+## Published on {{ extra.external_platform }}
+
+This article was originally published on [{{ extra.external_platform }}]({{ extra.external_url }}).
+
+### Summary
+
+Brief summary of what readers will find in the external post:
+- Key point 1
+- Key point 2  
+- Key point 3
+
+### Why This Matters
+
+A paragraph explaining the significance of this work and why readers should check it out.
+
+---
+
+**[→ Read the full article on {{ extra.external_platform }}]({{ extra.external_url }}){:target="_blank" rel="noopener noreferrer"}**
+
+*Originally published on {{ date | date(format="%B %d, %Y") }}*
