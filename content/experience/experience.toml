@@ -4,7 +4,14 @@ title = "Software Engineer, Rollup Product"
 subtitle = "Conduit"
 date = "2026-Present"
 content = """
-Working on rollup infrastructure and EVM-level customizations. My work focuses on building core rollup primitives, precompiles, and integrations that make it easier to launch, operate, and scale Ethereum rollups.
+Working on production rollup infrastructure and custom rollup deployments, with a focus on the OP Stack, reliability, upgrades, migrations and security.
+
+- Operate and upgrade ~80 OP Stack networks across mainnet, enterprise and testnet environments, including large-scale contract upgrades and hardforks.
+- Led a ~2-month migration of a heavily modified Zircuit OP Stack fork to Conduit's standard infrastructure, including planning, automation, shadow testing, security review and post-migration support for a network with ~$20M TVL.
+- Built Rollup Canary, an internal system for continuously testing critical rollup flows such as deposits, withdrawals and upgrades, and extended it to test customer-specific behaviour.
+- Work across OP Stack internals including op-node, op-geth, op-reth, op-batcher and associated proving, DA and sequencing infrastructure.
+- Handle production incidents, security upgrades and customer-specific infrastructure issues across rollup deployments.
+- Work on custom rollup infrastructure and integrations including ZK proving systems, stablecoin (USDC, AUSD) infrastructure, and bundlers.
 """
 
 
